@@ -2,12 +2,13 @@ import express, { Request, Response } from "express";
 import { Socket, Server } from "socket.io";
 import { MongoClient } from "mongodb";
 import { createAdapter } from "@socket.io/mongo-adapter";
+import { containsObject, removeByAttr } from "./utils";
 require("dotenv").config();
 const DB = "test";
 const COLLECTION = "socket.io-adapter-events";
 
 const mongoClient = new MongoClient(process.env.MONGODB_URI || "", {});
-const activeUsers: {
+let activeUsers: {
   name: string;
   type: string;
   image: string;
@@ -78,14 +79,24 @@ const main = async () => {
   const teacherRoom = io.of("user-room");
   teacherRoom.on("connection", (socket: Socket) => {
     socket.join("user-room");
-
     // Listen for new messages
     // data= { name:"XYZ",type:"teacher",image:"a" }
     socket.on(USER_JOIN_EVENT, (data) => {
-      activeUsers.push(data);
+      if (!containsObject(data, activeUsers)) {
+        activeUsers.push(data);
+      }
+
       teacherRoom.in("user-room").emit(USER_JOIN_EVENT, activeUsers);
     });
-    socket.on(USER_LEAVE_EVENT, (data) => {});
+    socket.on(USER_LEAVE_EVENT, (data) => {
+      activeUsers = removeByAttr(activeUsers, "email", data.email) as {
+        name: string;
+        type: string;
+        image: string;
+        subject: string;
+        email: string;
+      }[];
+    });
 
     // Leave the room if the user closes the socket
     socket.on("disconnect", () => {
