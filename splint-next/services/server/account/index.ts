@@ -1,19 +1,18 @@
-import { MongoClient } from "mongodb";
+import { getCollectionFromDB } from "../db/helpers";
 import clientPromise from "../db/mongoDb";
-import { ITeacherCollection, IUserAccount } from "./account.types";
+import { ITeacherCollection, IUserAccount, UserRoles } from "./account.types";
 
 export const getUserAccountType = async (email: IUserAccount["email"]) => {
   try {
     if (clientPromise) {
-      const databaseConn =
-        await (clientPromise as unknown as Promise<MongoClient>);
-      const database = databaseConn.db("test");
-      const accounts = database.collection<ITeacherCollection>("teachers");
+      const accounts = await getCollectionFromDB<ITeacherCollection>(
+        "teachers"
+      );
       const userAccount = await accounts.findOne({ email });
       if (userAccount) {
-        return "teacher";
+        return UserRoles.TEACHER;
       } else {
-        return "student";
+        return UserRoles.STUDENT;
       }
     } else {
       throw "Issue with db connection";
