@@ -3,11 +3,13 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useState } from "react";
+import { ChatTest } from "../src/components/features/chat/test";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
   console.log(session);
-
+  const [roomId, setRoomId] = useState("");
   return (
     <div className={styles.container}>
       <Head>
@@ -29,6 +31,15 @@ const Home: NextPage = () => {
             Sign Out
           </button>
         )}
+        <div>
+          <input
+            type="text"
+            onChange={(e) => {
+              setRoomId(e.target.value);
+            }}
+          />
+          {roomId === "123" && <ChatTest roomId="123" />}
+        </div>
         <p className={styles.description}>
           Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
