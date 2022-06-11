@@ -10,6 +10,15 @@ module.exports = {
       width: {
         100: '32rem',
       },
+      height: {
+        '22x': '22%',
+      },
+      colors: {
+        primary: '#08D2DD',
+      },
+      fontSize: {
+        xxs: '.65rem',
+      },
     },
   },
   plugins: [],

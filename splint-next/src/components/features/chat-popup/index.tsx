@@ -1,5 +1,60 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
+import MessageArea from '../chat/MessageArea';
+import MessageReceived from '../chat/MessageReceived';
+import MessageSent from '../chat/MessageSent';
+
+const liveSupportAgents = [
+  'https://avatars.githubusercontent.com/u/76472450?v=4',
+  'https://avatars.githubusercontent.com/u/76472450?v=4',
+  'https://avatars.githubusercontent.com/u/76472450?v=4',
+];
+
+interface chat {
+  userImage: string;
+  message: string;
+  time: string;
+  isSent: boolean;
+}
+
+const chats: chat[] = [
+  {
+    userImage: liveSupportAgents[0],
+    message: 'Hi there, hope you"re doing good.',
+    time: '12:45 • 12 May 2022',
+    isSent: false,
+  },
+  {
+    userImage: liveSupportAgents[0],
+    message: 'Hi, I am good',
+    time: '12:45 • 12 May 2022',
+    isSent: true,
+  },
+  {
+    userImage: liveSupportAgents[0],
+    message: 'Hi there, hope you"re doing good.',
+    time: '12:45 • 12 May 2022',
+    isSent: false,
+  },
+  {
+    userImage: liveSupportAgents[0],
+    message: 'Hi, I am good',
+    time: '12:45 • 12 May 2022',
+    isSent: true,
+  },
+  {
+    userImage: liveSupportAgents[0],
+    message: 'Hi there, hope you"re doing good.',
+    time: '12:45 • 12 May 2022',
+    isSent: false,
+  },
+  {
+    userImage: liveSupportAgents[0],
+    message: 'Hi, I am good',
+    time: '12:45 • 12 May 2022',
+    isSent: true,
+  },
+];
 
 const ChatPopUp = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -19,18 +74,25 @@ const ChatPopUp = () => {
       {/* chat popup modal */}
       {isChatOpen && (
         <div
-          className='fixed h-2/3 w-80 bottom-4 right-4 rounded-xl bg-white z-50 box-shadow-01'
+          className='fixed h-3/5 w-80 bottom-8 right-4 rounded-xl bg-white z-50 box-shadow-01'
           // onClick={() => {
           //   setIsChatOpen(false);
           // }}
         >
           {/* chat header */}
-          <div className=' h-1/5 rounded-t-lg bg-teal-400 p-3'>
-            <p>Questions? Chat with us!</p>
-            <p></p>
+          <div className=' h-22x rounded-t-md flex flex-col items-start justify-center self-center pattern-bg px-5 py-2.5 text-gray-800'>
+            <p className='m-0 text-base font-bold '>Questions? Chat with us!</p>
+            <p className='m-0 text-xs -mt-px'>Typically replies withing 15mins</p>
+            <div className='mt-2.5  -mb-2'>
+              {liveSupportAgents.map((agent) => (
+                <span key={agent} className='mr-2'>
+                  <Image className='rounded-full' src={agent} alt='agent-image' width={35} height={35} />
+                </span>
+              ))}
+            </div>
           </div>
           {/* chat area */}
-          <div className=' h-4/5 rounded-b-lg bg-white p-3'>Test</div>
+          <MessageArea chats={chats} />
         </div>
       )}
     </>
@@ -38,3 +100,5 @@ const ChatPopUp = () => {
 };
 
 export default ChatPopUp;
+
+export type { chat };
