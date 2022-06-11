@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import MessageArea from '../chat/MessageArea';
 import MessageReceived from '../chat/MessageReceived';
 import MessageSent from '../chat/MessageSent';
+import { AiOutlineClose } from 'react-icons/ai';
 
 const liveSupportAgents = [
   'https://avatars.githubusercontent.com/u/76472450?v=4',
@@ -74,7 +75,7 @@ const ChatPopUp = () => {
       {/* chat popup modal */}
       {isChatOpen && (
         <div
-          className='fixed h-3/5 w-80 bottom-8 right-4 rounded-xl bg-white z-50 box-shadow-01'
+          className='fixed h-3/5 w-80 bottom-8 right-4 rounded-xl bg-white z-50 box-shadow-01 transition-all duration-500'
           // onClick={() => {
           //   setIsChatOpen(false);
           // }}
@@ -90,6 +91,13 @@ const ChatPopUp = () => {
                 </span>
               ))}
             </div>
+            <AiOutlineClose
+              onClick={() => {
+                setIsChatOpen(false);
+              }}
+              className='absolute top-2 right-2.5 cursor-pointer'
+              size={20}
+            />
           </div>
           {/* chat area */}
           <MessageArea chats={chats} />

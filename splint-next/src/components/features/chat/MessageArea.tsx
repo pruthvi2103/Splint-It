@@ -29,7 +29,7 @@ const MessageArea: React.FC<Props> = ({ chats }) => {
           className='w-10/12	py-2 px-3 outline-none leading-5 text-gray-700'
         />
         <div className='w-2/12 border-gray-200 flex items-center justify-start'>
-          <IoIosSend size={40} className='-mt-2.5  cursor-pointer' />
+          <IoIosSend size={40} className='-mt-3.5  cursor-pointer' />
         </div>
       </div>
     </div>
