@@ -1,7 +1,25 @@
 import Image from 'next/image';
 import React from 'react';
-import { AiOutlineDown, AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineArrowRight, AiOutlineCheckCircle, AiOutlineDown, AiOutlineUser } from 'react-icons/ai';
 import { FiSearch } from 'react-icons/fi';
+
+const whatYouWillLLearn = [
+  'File structure and response codes',
+  'Express Server & Database Modelling',
+  'Preparing Database Models',
+  'Database Connectivity',
+];
+const courseRequirements = ['System with Internet Connection', 'Interest to learn', 'Dedication'];
+
+const courseFeatures = [
+  'Course material',
+  'Course resources',
+  'On demand recorded videos',
+  'Practical exercises',
+  'Quizzes',
+  'Assignments',
+  'Course completion certificate',
+];
 
 const DemoPage = () => {
   return (
@@ -37,7 +55,7 @@ const DemoPage = () => {
         <div className='flex ml-10'>
           <span className='cursor-pointer'>Support</span>
           <span className='ml-8 flex items-center justify-center cursor-pointer'>
-            <AiOutlineUser className='ml-1 ' size={20} /> Manish
+            <AiOutlineUser className='mr-1 ' size={20} /> Manish
           </span>
         </div>
       </nav>
@@ -68,15 +86,64 @@ const DemoPage = () => {
         </div>
       </div>
       {/* Course details  */}
-      <div className='flex p-6'>
+      <div className='flex py-20 px-24 justify-between'>
         {/* Left Container */}
-        <div>
+        <div className='w-8/12 mr-12'>
           {/* What to learn */}
-          <div></div>
+          <div className='flex flex-col bg-sky-50 py-8 rounded-3xl px-10 '>
+            <p className='text-2xl font-semibold text-blue-800 mb-6'>{"What you'll learn"}</p>
+            {whatYouWillLLearn.map((item) => (
+              <p
+                key={item}
+                className='flex items-center justify-start mb-2.5 font-medium tracking-wide text-gray-600'
+              >
+                <AiOutlineArrowRight className='mr-1.5 scale-125' /> {item}
+              </p>
+            ))}
+          </div>
+          {/* Requirements*/}
+          <div className='flex flex-col bg-sky-50 mt-8 py-8 rounded-3xl px-10 '>
+            <p className='text-2xl font-semibold text-blue-800 mb-6'>{"What you'll learn"}</p>
+            {courseRequirements.map((item) => (
+              <p
+                key={item}
+                className='flex items-center justify-start mb-2.5 font-medium tracking-wide text-gray-600'
+              >
+                <AiOutlineArrowRight className='mr-1.5 scale-125' /> {item}
+              </p>
+            ))}
+          </div>
         </div>
         {/* Right Container */}
-        <div></div>
+        <div className='w-2/6 '>
+          {/* Course Price */}
+          <div className='flex flex-col bg-sky-50 py-8 rounded-3xl px-10'>
+            {/* price */}
+            <p className='text-blue-800 text-2xl tracking-wide font-bold'>{'₹7080.00'}</p>
+            <button className='bg-gradient-to-r my-2 from-blue-800 rounded-lg text-white py-2.5 font-light to-blue-700'>
+              Enroll Now
+            </button>
+            <p className='self-center text-sm '>This course is a part of Tech Neuron.</p>
+            {/* Course Features */}
+            <div>
+              <p className='mt-5 mb-3 text-xl text-blue-800 font-semibold'>Course Features</p>
+              {courseFeatures.map((feature) => (
+                <p key={feature} className='flex items-center justify-start mb-2 font-medium text-gray-600'>
+                  {' '}
+                  <AiOutlineCheckCircle className='mr-2 scale-125' /> {feature}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
+      {/* Footer */}
+      <footer className='bg-gradient-to-r py-4 from from-blue-700 to-blue-600 flex items-center justify-between px-12'>
+        <p className='text-gray-200 opacity-60'>© iNeuron Intelligence Pvt. Ltd. 2022</p>
+        <p className='text-gray-200 opacity-60'>
+          Terms & Conditions <span className='text-orange-500'>|</span> Privacy Policy
+        </p>
+      </footer>
     </>
   );
 };
