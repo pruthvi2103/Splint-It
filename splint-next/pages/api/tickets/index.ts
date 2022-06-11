@@ -12,12 +12,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    // const session = await getSession({ req });
+    const session = await getSession({ req });
 
-    if (true) {
+    if (session) {
       if (req.method === "POST") {
         try {
-          const ticketData = await createTicket(JSON.parse(req.body));
+          const ticketData = await createTicket({
+            ...JSON.parse(req.body),
+            raisedBy: session.user?.email,
+          });
           res.status(200).json(ticketData);
         } catch (error) {
           res.status(500).json({ message: "server error", error });

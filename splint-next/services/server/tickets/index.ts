@@ -1,3 +1,4 @@
+import { IUserAccount } from "../account/account.types";
 import { getCollectionFromDB } from "../db/helpers";
 import clientPromise from "../db/mongoDb";
 import {
@@ -11,6 +12,7 @@ import {
 export const createTicket = async ({
   query,
   subject,
+  raisedBy,
 }: ICreateTicketPayload) => {
   try {
     const tickets = await getCollectionFromDB<ITicket>("tickets");
@@ -19,6 +21,7 @@ export const createTicket = async ({
       query: query,
       subject: subject,
       status: TicketStatus.PENDING,
+      raisedBy,
     };
     const ticketResult = await tickets.insertOne({
       ...ticketData,
@@ -35,7 +38,19 @@ export const getAllPendingTickets = async () => {
       status: { $ne: TicketStatus.COMPLETED },
     })
     .toArray();
-  console.log(allTickets);
+
+  return allTickets;
+};
+export const getActiveTicketForStudent = async (
+  email: IUserAccount["email"]
+) => {
+  const tickets = await getCollectionFromDB<ITicket>("tickets");
+  const allTickets = await tickets
+    .find({
+      status: TicketStatus.ONGOING,
+      raisedBy: email,
+    })
+    .toArray();
 
   return allTickets;
 };

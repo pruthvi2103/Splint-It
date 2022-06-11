@@ -1,4 +1,8 @@
-import { ITeacherCollection, Subjects } from "../account/account.types";
+import {
+  ITeacherCollection,
+  IUserAccount,
+  Subjects,
+} from "../account/account.types";
 
 export enum EscalationLevel {
   AUTOMATED = "automated",
@@ -18,11 +22,13 @@ export interface ITicket {
   status: TicketStatus;
   asigneee?: ITeacherCollection["email"];
   subject: Subjects;
+  raisedBy: IUserAccount["email"];
 }
 
 export interface ICreateTicketPayload {
   query: ITicket["query"];
   subject: ITicket["subject"];
+  raisedBy: IUserAccount["email"];
 }
 export interface IUpdateTicketPayload {
   query: Required<ITicket["query"]>;
