@@ -1,10 +1,12 @@
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import socketIOClient, { Socket } from "socket.io-client";
 
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage"; // Name of the event
-const SOCKET_SERVER_URL = "http://localhost:4000";
+const SOCKET_SERVER_URL = process.env.NEXT_WS_URL || "http://localhost:4000";
 
 const useChat = (roomId: string) => {
+  const { data: session } = useSession();
   const [messages, setMessages] = useState<any[]>([]); // Sent and received messages
   const socketRef = useRef<Socket>();
 
@@ -16,11 +18,13 @@ const useChat = (roomId: string) => {
 
     // Listens for incoming messages
     socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
-      const incomingMessage = {
-        ...message,
-        ownedByCurrentUser: message.senderId === socketRef?.current?.id,
-      };
-      setMessages((messages) => [...messages, incomingMessage]);
+      // const incomingMessage = {
+      //   ...message,
+      //    ownedByCurrentUser: message?.sentBy?.email === session?.user?.email,
+      // };
+      console.log(message);
+
+      setMessages((messages) => message);
     });
 
     // Destroys the socket reference
@@ -35,11 +39,11 @@ const useChat = (roomId: string) => {
   const sendMessage = (messageBody: string) => {
     socketRef?.current?.emit(NEW_CHAT_MESSAGE_EVENT, {
       body: messageBody,
-      senderId: socketRef?.current?.id,
+      sentBy: { email: session?.user?.email, name: session?.user?.name },
     });
   };
 
-  return { messages, sendMessage };
+  return { messages, sendMessage, userEmail: session?.user?.email };
 };
 
 export default useChat;

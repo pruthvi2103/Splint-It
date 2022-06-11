@@ -10,7 +10,7 @@ export enum Subjects {
 export interface IUserAccount {
   email: string;
   role: UserRoles;
-  subjects: Subjects;
+  subjects: Subjects[];
 }
 export interface ITeacherCollection {
   email: IUserAccount["email"];

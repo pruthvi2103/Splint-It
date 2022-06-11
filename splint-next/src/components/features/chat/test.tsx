@@ -3,7 +3,7 @@ import useChat from "../../../hooks/useChat";
 
 const ChatTest = ({ roomId }: { roomId: string }) => {
   const [chat, setChat] = useState("");
-  const { messages, sendMessage } = useChat(roomId);
+  const { messages, sendMessage, userEmail } = useChat(roomId);
   console.log(messages);
 
   return (
@@ -26,7 +26,8 @@ const ChatTest = ({ roomId }: { roomId: string }) => {
       <ul>
         {messages.map((message, idx) => (
           <li key={`${message.senderId}-idx`}>
-            {message.ownedByCurrentUser ? "me:" : "other:"} {message.body}
+            {message.sentBy.email === userEmail ? "me:" : "other:"}{" "}
+            {message.body}
           </li>
         ))}
       </ul>
