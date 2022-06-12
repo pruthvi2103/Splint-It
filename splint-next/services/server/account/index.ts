@@ -1,3 +1,4 @@
+import axios from "axios";
 import { getCollectionFromDB } from "../db/helpers";
 import clientPromise from "../db/mongoDb";
 import { ITeacherCollection, IUserAccount, UserRoles } from "./account.types";
@@ -21,3 +22,9 @@ export const getUserAccountType = async (email: IUserAccount["email"]) => {
     throw error;
   }
 };
+
+// export const getActiveMentors = async () => {
+//   try {
+//     axios.get(`${process.env.NEXT_WS_URL}/active-mentors`)
+//   }
+// }

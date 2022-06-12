@@ -18,7 +18,7 @@ export default async function handler(
       if (req.method === "POST") {
         try {
           const ticketData = await createTicket({
-            ...JSON.parse(req.body),
+            ...req.body,
             raisedBy: session.user?.email,
           });
           res.status(200).json(ticketData);

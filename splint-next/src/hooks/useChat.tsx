@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import socketIOClient, { Socket } from 'socket.io-client';
 
 const NEW_CHAT_MESSAGE_EVENT = 'newChatMessage'; // Name of the event
+const MENTOR_CONNECTED = 'mentorConnected';
 const SOCKET_SERVER_URL = process.env.NEXT_WS_URL || 'http://localhost:4000';
 
 const useChat = (roomId: string) => {
@@ -15,7 +16,7 @@ const useChat = (roomId: string) => {
     socketRef.current = socketIOClient(SOCKET_SERVER_URL, {
       query: { roomId },
     });
-
+    socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {});
     // Listens for incoming messages
     socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
       // const incomingMessage = {
@@ -38,7 +39,11 @@ const useChat = (roomId: string) => {
   const sendMessage = (messageBody: string) => {
     socketRef?.current?.emit(NEW_CHAT_MESSAGE_EVENT, {
       body: messageBody,
-      sentBy: { email: session?.user?.email, name: session?.user?.name },
+      sentBy: {
+        email: session?.user?.email,
+        name: session?.user?.name,
+        image: session?.user?.image,
+      },
     });
   };
 

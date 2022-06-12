@@ -41,11 +41,13 @@ const main = async () => {
   io.adapter(createAdapter(mongoCollection));
 
   const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
+  const MENTOR_CONNECTED = "mentorConnected";
   const USER_JOIN_EVENT = "userJoin";
   const USER_LEAVE_EVENT = "userLeave";
   app.get("/", (req: Request, res: Response) => {
     res.json({ data: "hello world" });
   });
+  app.get("/");
   io.on("connection", (socket: Socket) => {
     const { roomId } = socket.handshake.query;
     if (roomId) {

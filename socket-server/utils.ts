@@ -19,7 +19,7 @@ export const removeByAttr = function (
 export function containsObject(obj: Record<string, unknown>, list: Array<any>) {
   var i;
   for (i = 0; i < list.length; i++) {
-    if (list[i] === obj) {
+    if (list[i].email === obj.email) {
       return true;
     }
   }

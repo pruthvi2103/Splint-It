@@ -47,7 +47,7 @@ export const getActiveTicketForStudent = async (
   const tickets = await getCollectionFromDB<ITicket>("tickets");
   const allTickets = await tickets
     .find({
-      status: TicketStatus.ONGOING,
+      status: { $ne: TicketStatus.COMPLETED },
       raisedBy: email,
     })
     .toArray();

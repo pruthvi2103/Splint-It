@@ -1,11 +1,19 @@
 import "../styles/globals.css";
-import type { AppProps } from "next/app";
+
 import { SessionProvider } from "next-auth/react";
+import { AppProps } from "../src/types/common";
+import AuthGuard from "../src/hoc/AuthGuard";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      {Component.requireAuth ? (
+        <AuthGuard>
+          <Component {...pageProps} />
+        </AuthGuard>
+      ) : (
+        <Component {...pageProps} />
+      )}
     </SessionProvider>
   );
 }
