@@ -1,10 +1,11 @@
-import { useSession } from 'next-auth/react';
-import { useEffect, useRef, useState } from 'react';
-import socketIOClient, { Socket } from 'socket.io-client';
+import { useSession } from "next-auth/react";
+import { useEffect, useRef, useState } from "react";
+import socketIOClient, { Socket } from "socket.io-client";
 
-const NEW_CHAT_MESSAGE_EVENT = 'newChatMessage'; // Name of the event
-const MENTOR_CONNECTED = 'mentorConnected';
-const SOCKET_SERVER_URL = process.env.NEXT_WS_URL || 'http://localhost:4000';
+const NEW_CHAT_MESSAGE_EVENT = "newChatMessage"; // Name of the event
+const MENTOR_CONNECTED = "mentorConnected";
+const SOCKET_SERVER_URL =
+  process.env.NEXT_PUBLIC_WS_URL || "http://localhost:4000";
 
 const useChat = (roomId: string) => {
   const { data: session } = useSession();
