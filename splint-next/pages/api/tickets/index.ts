@@ -36,9 +36,11 @@ export default async function handler(
       }
       if (req.method === "PUT") {
         try {
-          const ticketData = await updateTicket(JSON.parse(req.body));
+          const ticketData = await updateTicket(req.body);
           res.status(200).json(ticketData);
         } catch (error) {
+          console.log(error);
+
           res.status(500).json({ message: "server error", error });
         }
       }

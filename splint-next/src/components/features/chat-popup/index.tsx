@@ -10,6 +10,8 @@ import { getActiveTicketsForStudent } from "../../../../services/client/ticket";
 import CreateQueryArea from "../chat/CreateQueryArea";
 import { createTicket } from "../../../../services/client/ticket";
 import { ICreateTicketPayload } from "../../../../services/server/tickets/ticket.types";
+import { getAssignedTicket } from "../../../../services/client/ticket";
+import { UserRoles } from "../../../../services/server/account/account.types";
 
 interface chat {
   userImage: string;
@@ -19,7 +21,6 @@ interface chat {
 }
 
 const ChatPopUp = ({ onlineUsers }) => {
-  console.log(onlineUsers);
   const { status, data: session } = useSession();
   const [activeTicketData, setActiveTicketData] = useState(undefined);
   const fetchTicketsForStudent = async () => {
@@ -28,23 +29,28 @@ const ChatPopUp = ({ onlineUsers }) => {
       setActiveTicketData(res);
     }
   };
-  const matchMakeActiveMentors = () => {
-    onlineUsers.forEach((onLineUser) => {
-      if (onLineUser.subjects.includes(activeTicketData.subject)) {
-        assignRoomToMentor(activeTicketData._id);
-      }
-    });
+  const fetchTicketsForMentor = async () => {
+    const res = await getAssignedTicket();
+    if (res.length) {
+      setActiveTicketData(res);
+    }
   };
+  // const matchMakeActiveMentors = () => {
+  //   onlineUsers.forEach((onLineUser) => {
+  //     if (onLineUser.subjects.includes(activeTicketData.subject)) {
+  //       assignRoomToMentor(activeTicketData._id);
+  //     }
+  //   });
+  // };
   useEffect(() => {
     if (status !== "loading") {
-      fetchTicketsForStudent();
+      if (session?.user.type === UserRoles.TEACHER) {
+        fetchTicketsForMentor();
+      } else {
+        fetchTicketsForStudent();
+      }
     }
   }, [status]);
-  useEffect(() => {
-    if (activeTicketData) {
-      matchMakeActiveMentors();
-    }
-  }, [activeTicketData]);
 
   const [isChatOpen, setIsChatOpen] = useState(false);
   const chatRef = useRef(null);
@@ -52,6 +58,7 @@ const ChatPopUp = ({ onlineUsers }) => {
   const handleCreateTicket = async (ticketData: ICreateTicketPayload) => {
     const res = await createTicket(ticketData);
     setActiveTicketData(res);
+    setIsChatOpen(true);
   };
   return (
     <>

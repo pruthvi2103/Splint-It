@@ -41,6 +41,17 @@ export const getAllPendingTickets = async () => {
 
   return allTickets;
 };
+export const getAssignedTicket = async (email: IUserAccount["email"]) => {
+  const tickets = await getCollectionFromDB<ITicket>("tickets");
+  const allTickets = await tickets
+    .find({
+      status: TicketStatus.ONGOING,
+      asigneee: email,
+    })
+    .toArray();
+
+  return allTickets;
+};
 export const getActiveTicketForStudent = async (
   email: IUserAccount["email"]
 ) => {

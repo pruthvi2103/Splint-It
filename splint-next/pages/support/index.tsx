@@ -1,5 +1,5 @@
-import React from 'react';
-import Support from '../../src/components/features/support';
+import React from "react";
+import Support from "../../src/components/features/support";
 
 const SupportPage = () => {
   return (
@@ -10,3 +10,4 @@ const SupportPage = () => {
 };
 
 export default SupportPage;
+SupportPage.requireAuth = true;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   useTable,
   useFilters,
@@ -6,20 +6,24 @@ import {
   useAsyncDebounce,
   useSortBy,
   usePagination,
-} from 'react-table';
+} from "react-table";
 import {
   BsChevronDoubleLeft,
   BsChevronLeft,
   BsChevronRight,
   BsChevronDoubleRight,
   BsChevronDown,
-} from 'react-icons/bs';
-import { Button, PageButton, classNames } from '../../../shared/Button';
-import { SortIcon, SortUpIcon, SortDownIcon } from '../../../shared/Icons';
-import Image from 'next/image';
+} from "react-icons/bs";
+import { Button, PageButton, classNames } from "../../../shared/Button";
+import { SortIcon, SortUpIcon, SortDownIcon } from "../../../shared/Icons";
+import Image from "next/image";
 
 // Define a default UI for filtering
-function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) {
+function GlobalFilter({
+  preGlobalFilteredRows,
+  globalFilter,
+  setGlobalFilter,
+}) {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -27,12 +31,12 @@ function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
   }, 200);
 
   return (
-    <label className='flex gap-x-2 items-baseline ml-2'>
-      <span className='text-gray-700'>Search: </span>
+    <label className="flex gap-x-2 items-baseline ml-2">
+      <span className="text-gray-700">Search: </span>
       <input
-        type='text'
-        className='rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 p-1 px-2 focus:ring-opacity-50'
-        value={value || ''}
+        type="text"
+        className="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 p-1 px-2 focus:ring-opacity-50"
+        value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
           onChange(e.target.value);
@@ -45,12 +49,14 @@ function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
 
 // This is a custom filter UI for selecting
 // a unique option from a list
-export function SelectColumnFilter({ column: { filterValue, setFilter, preFilteredRows, id, render } }) {
+export function SelectColumnFilter({
+  column: { filterValue, setFilter, preFilteredRows, id, render },
+}) {
   // Calculate the options for filtering
   // using the preFilteredRows
   const options = React.useMemo(() => {
     const options = new Set();
-    preFilteredRows.forEach((row) => {
+    preFilteredRows?.forEach((row) => {
       options.add(row.values[id]);
     });
     return [...options.values()];
@@ -58,10 +64,10 @@ export function SelectColumnFilter({ column: { filterValue, setFilter, preFilter
 
   // Render a multi-select box
   return (
-    <label className='flex gap-x-2  items-center justify-center'>
-      <span className='text-gray-700'>{render('Header')}: </span>
+    <label className="flex gap-x-2  items-center justify-center">
+      <span className="text-gray-700">{render("Header")}: </span>
       <select
-        className='rounded-md py-1.5 px-1.5 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
+        className="rounded-md py-1.5 px-1.5 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         name={id}
         id={id}
         value={filterValue}
@@ -69,7 +75,7 @@ export function SelectColumnFilter({ column: { filterValue, setFilter, preFilter
           setFilter(e.target.value || undefined);
         }}
       >
-        <option value=''>All</option>
+        <option value="">All</option>
         {options.map((option, i) => (
           <option key={i} value={option}>
             {option}
@@ -81,16 +87,16 @@ export function SelectColumnFilter({ column: { filterValue, setFilter, preFilter
 }
 
 export function StatusPill({ value }) {
-  const status = value ? value.toLowerCase() : 'unknown';
+  const status = value ? value.toLowerCase() : "unknown";
 
   return (
     <span
       className={classNames(
-        'px-3 py-1 uppercase leading-wide font-bold text-xs rounded-full shadow-sm',
-        status.startsWith('completed') ? 'bg-green-100 text-green-800' : null,
-        status.startsWith('pending') ? 'bg-yellow-100 text-yellow-800' : null,
-        status.startsWith('ongoing') ? 'bg-red-100 text-sky-800' : null,
-        status.startsWith('urgent') ? 'bg-red-100 text-red-800' : null
+        "px-3 py-1 uppercase leading-wide font-bold text-xs rounded-full shadow-sm",
+        status.startsWith("completed") ? "bg-green-100 text-green-800" : null,
+        status.startsWith("pending") ? "bg-yellow-100 text-yellow-800" : null,
+        status.startsWith("ongoing") ? "bg-red-100 text-sky-800" : null,
+        status.startsWith("urgent") ? "bg-red-100 text-red-800" : null
       )}
     >
       {status}
@@ -100,19 +106,21 @@ export function StatusPill({ value }) {
 
 export function AvatarCell({ value, column, row }) {
   return (
-    <div className='flex items-center justify-start'>
+    <div className="flex items-center justify-start">
       {!!row.original[column.imgAccessor] ? (
         <Image
           height={30}
           width={30}
-          className='rounded-full'
+          className="rounded-full"
           src={row.original[column.imgAccessor]}
-          alt='profile'
+          alt="profile"
         />
       ) : null}
-      <div className='ml-4'>
-        <div className='text-sm font-medium text-gray-900'>{value}</div>
-        <div className='text-sm text-gray-500'>{row.original[column.emailAccessor]}</div>
+      <div className="ml-4">
+        <div className="text-sm font-medium text-gray-900">{value}</div>
+        <div className="text-sm text-gray-500">
+          {row.original[column.emailAccessor]}
+        </div>
       </div>
     </div>
   );
@@ -155,7 +163,7 @@ function Table({ columns, data }) {
   // Render the UI for your table
   return (
     <>
-      <div className='sm:flex sm:gap-x-2'>
+      <div className="sm:flex sm:gap-x-2">
         <GlobalFilter
           preGlobalFilteredRows={preGlobalFilteredRows}
           globalFilter={state.globalFilter}
@@ -164,43 +172,51 @@ function Table({ columns, data }) {
         {headerGroups.map((headerGroup) =>
           headerGroup.headers.map((column) =>
             column.Filter ? (
-              <div className='mt-2 sm:mt-0' key={column.id}>
-                {column.render('Filter')}
+              <div className="mt-2 sm:mt-0" key={column.id}>
+                {column.render("Filter")}
               </div>
             ) : null
           )
         )}
       </div>
       {/* table */}
-      <div className='mt-4 flex flex-col'>
-        <div className='-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8'>
-          <div className='py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8'>
-            <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
-              <table {...getTableProps()} className='min-w-full divide-y divide-gray-200'>
-                <thead className='bg-gray-50'>
+      <div className="mt-4 flex flex-col">
+        <div className="-my-2 overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
+          <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+              <table
+                {...getTableProps()}
+                className="min-w-full divide-y divide-gray-200"
+              >
+                <thead className="bg-gray-50">
                   {headerGroups.map((headerGroup, i) => (
-                    <tr key={headerGroup.id + i} {...headerGroup.getHeaderGroupProps()}>
+                    <tr
+                      key={headerGroup.id + i}
+                      {...headerGroup.getHeaderGroupProps()}
+                    >
                       {headerGroup.headers.map((column) => (
                         // Add the sorting props to control sorting. For this example
                         // we can add them into the header props
                         <th
                           key={i}
-                          scope='col'
-                          className='group px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider '
-                          {...column.getHeaderProps(column.getSortByToggleProps())}
+                          scope="col"
+                          className="group px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider "
+                          {...column.getHeaderProps(
+                            column.getSortByToggleProps()
+                          )}
                         >
-                          <div className='flex items-center justify-center'>
-                            {column.render('Header')}
+                          <div className="flex items-center justify-center">
+                            {column.render("Header")}
                             {/* Add a sort direction indicator */}
                             <span>
                               {column.isSorted ? (
                                 column.isSortedDesc ? (
-                                  <SortDownIcon className='w-4 h-4 text-gray-400' />
+                                  <SortDownIcon className="w-4 h-4 text-gray-400" />
                                 ) : (
-                                  <SortUpIcon className='w-4 h-4 text-gray-400' />
+                                  <SortUpIcon className="w-4 h-4 text-gray-400" />
                                 )
                               ) : (
-                                <SortIcon className='w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100' />
+                                <SortIcon className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100" />
                               )}
                             </span>
                           </div>
@@ -209,7 +225,10 @@ function Table({ columns, data }) {
                     </tr>
                   ))}
                 </thead>
-                <tbody {...getTableBodyProps()} className='bg-white divide-y divide-gray-200'>
+                <tbody
+                  {...getTableBodyProps()}
+                  className="bg-white divide-y divide-gray-200"
+                >
                   {page.map((row, i) => {
                     // new
                     prepareRow(row);
@@ -224,13 +243,15 @@ function Table({ columns, data }) {
                             <td
                               key={cell}
                               {...cell.getCellProps()}
-                              className='px-6 py-3 whitespace-nowrap w-full text-center'
-                              role='cell'
+                              className="px-6 py-3 whitespace-nowrap w-full text-center"
+                              role="cell"
                             >
-                              {cell.column.Cell.name === 'defaultRenderer' ? (
-                                <div className='text-sm text-gray-500 '>{cell.render('Cell')}</div>
+                              {cell.column.Cell.name === "defaultRenderer" ? (
+                                <div className="text-sm text-gray-500 ">
+                                  {cell.render("Cell")}
+                                </div>
                               ) : (
-                                cell.render('Cell')
+                                cell.render("Cell")
                               )}
                             </td>
                           );
@@ -245,8 +266,8 @@ function Table({ columns, data }) {
         </div>
       </div>
       {/* Pagination */}
-      <div className='py-3 flex items-center justify-between px-1.5'>
-        <div className='flex-1 flex justify-between sm:hidden'>
+      <div className="py-3 flex items-center justify-between px-1.5">
+        <div className="flex-1 flex justify-between sm:hidden">
           <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
             Previous
           </Button>
@@ -254,16 +275,16 @@ function Table({ columns, data }) {
             Next
           </Button>
         </div>
-        <div className='hidden sm:flex-1 sm:flex sm:items-center sm:justify-between'>
-          <div className='flex gap-x-2 items-baseline'>
-            <span className='text-sm text-gray-700'>
-              Page <span className='font-medium'>{state.pageIndex + 1}</span> of{' '}
-              <span className='font-medium'>{pageOptions.length}</span>
+        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+          <div className="flex gap-x-2 items-baseline">
+            <span className="text-sm text-gray-700">
+              Page <span className="font-medium">{state.pageIndex + 1}</span> of{" "}
+              <span className="font-medium">{pageOptions.length}</span>
             </span>
             <label>
-              <span className='sr-only'>Items Per Page</span>
+              <span className="sr-only">Items Per Page</span>
               <select
-                className='rounded-md py-1.5 px-1.5 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
+                className="rounded-md py-1.5 px-1.5 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 value={state.pageSize}
                 onChange={(e) => {
                   setPageSize(Number(e.target.value));
@@ -280,28 +301,47 @@ function Table({ columns, data }) {
           </div>
           <div>
             <nav
-              className='relative z-0 inline-flex rounded-md shadow-sm -space-x-px'
-              aria-label='Pagination'
+              className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+              aria-label="Pagination"
             >
-              <PageButton className='rounded-l-md' onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                <span className='sr-only'>First</span>
-                <BsChevronDoubleLeft className='h-5 w-5 text-gray-400' aria-hidden='true' />
-              </PageButton>
-              <PageButton onClick={() => previousPage()} disabled={!canPreviousPage}>
-                <span className='sr-only'>Previous</span>
-                <BsChevronLeft className='h-5 w-5 text-gray-400' aria-hidden='true' />
-              </PageButton>
-              <PageButton onClick={() => nextPage()} disabled={!canNextPage}>
-                <span className='sr-only'>Next</span>
-                <BsChevronRight className='h-5 w-5 text-gray-400' aria-hidden='true' />
+              <PageButton
+                className="rounded-l-md"
+                onClick={() => gotoPage(0)}
+                disabled={!canPreviousPage}
+              >
+                <span className="sr-only">First</span>
+                <BsChevronDoubleLeft
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
               </PageButton>
               <PageButton
-                className='rounded-r-md'
+                onClick={() => previousPage()}
+                disabled={!canPreviousPage}
+              >
+                <span className="sr-only">Previous</span>
+                <BsChevronLeft
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </PageButton>
+              <PageButton onClick={() => nextPage()} disabled={!canNextPage}>
+                <span className="sr-only">Next</span>
+                <BsChevronRight
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </PageButton>
+              <PageButton
+                className="rounded-r-md"
                 onClick={() => gotoPage(pageCount - 1)}
                 disabled={!canNextPage}
               >
-                <span className='sr-only'>Last</span>
-                <BsChevronDoubleRight className='h-5 w-5 text-gray-400' aria-hidden='true' />
+                <span className="sr-only">Last</span>
+                <BsChevronDoubleRight
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
               </PageButton>
             </nav>
           </div>

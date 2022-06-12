@@ -35,7 +35,7 @@ const MessageArea: React.FC<Props> = ({ activeTicketData }) => {
           } else {
             return (
               <MessageReceived
-                message={message.sentBy.body}
+                message={message.body}
                 userImage={message.sentBy.image}
                 time={"12:12"}
               />

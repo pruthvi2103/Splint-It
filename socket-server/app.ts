@@ -44,6 +44,7 @@ const main = async () => {
   const MENTOR_CONNECTED = "mentorConnected";
   const USER_JOIN_EVENT = "userJoin";
   const USER_LEAVE_EVENT = "userLeave";
+  const TICKET_CREATE = "ticketCreate";
   app.get("/", (req: Request, res: Response) => {
     res.json({ data: "hello world" });
   });
@@ -99,6 +100,7 @@ const main = async () => {
         email: string;
       }[];
     });
+    socket.on(TICKET_CREATE, () => {});
 
     // Leave the room if the user closes the socket
     socket.on("disconnect", () => {
