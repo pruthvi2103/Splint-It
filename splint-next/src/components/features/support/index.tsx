@@ -6,56 +6,63 @@ import { tableActionBtn } from '../../shared/Button';
 import ChatPopUp from '../chat-popup';
 import Header from '../demopage/Header';
 import Table, { AvatarCell, SelectColumnFilter, StatusPill } from '../support/table/index';
-
-// table columns
-const columns = [
-  {
-    Header: 'Name',
-    accessor: 'name',
-    Cell: AvatarCell,
-    imgAccessor: 'imgUrl',
-    emailAccessor: 'email',
-  },
-  {
-    Header: 'Query',
-    accessor: 'query',
-  },
-  {
-    Header: 'Subject',
-    accessor: 'subject',
-  },
-  {
-    Header: 'Status',
-    accessor: 'status',
-    Filter: SelectColumnFilter,
-    Cell: StatusPill,
-  },
-  {
-    Header: 'Action',
-    Cell: (props: any) => {
-      switch (props.row.original.status) {
-        case 'ongoing':
-          return <div className='flex'>{tableActionBtn('re-assign')}</div>;
-          break;
-        case 'pending':
-          return <div className='flex'>{tableActionBtn('address')}</div>;
-          break;
-        case 'completed':
-          return null;
-          break;
-        case 'urgent':
-          return <div className='flex'>{tableActionBtn('address')}</div>;
-          break;
-
-        default:
-          break;
-      }
-    },
-  },
-];
+import { ReAssignModal } from './ReAssignModal';
 
 const Support = () => {
   const [tickets, setTickets] = useState<ITicket[] | null>([]);
+  //   const [openReAssignModal, setOpenReAssignModasl] = useState(true);
+
+  const reAssignMentors = (id: string) => {};
+
+  // table columns
+  const columns = useMemo(
+    () => [
+      {
+        Header: 'Name',
+        accessor: 'name',
+        Cell: AvatarCell,
+        imgAccessor: 'imgUrl',
+        emailAccessor: 'email',
+      },
+      {
+        Header: 'Query',
+        accessor: 'query',
+      },
+      {
+        Header: 'Subject',
+        accessor: 'subject',
+      },
+      {
+        Header: 'Status',
+        accessor: 'status',
+        Filter: SelectColumnFilter,
+        Cell: StatusPill,
+      },
+      {
+        Header: 'Action',
+        Cell: (props: any) => {
+          switch (props.row.original.status) {
+            case 'ongoing':
+              reAssignMentors(props.original._id);
+              return <div className='flex'>{tableActionBtn('re-assign')}</div>;
+              break;
+            case 'pending':
+              return <div className='flex'>{tableActionBtn('address')}</div>;
+              break;
+            case 'completed':
+              return null;
+              break;
+            case 'urgent':
+              return <div className='flex'>{tableActionBtn('address')}</div>;
+              break;
+            default:
+              break;
+          }
+        },
+      },
+    ],
+    []
+  );
 
   //
   useEffect(() => {
@@ -102,6 +109,7 @@ const Support = () => {
       <div>
         <ChatPopUp />
       </div>
+      {/* <ReAssignModal isModalOpen={openReAssignModal} handleCloseModal={() => setOpenReAssignModal(false)} /> */}
     </div>
   );
 };
