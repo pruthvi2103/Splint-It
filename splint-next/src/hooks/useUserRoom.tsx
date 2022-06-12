@@ -7,7 +7,7 @@ const USER_JOIN_EVENT = "userJoin";
 const USER_LEAVE_EVENT = "userLeave";
 const MENTOR_ASSIGN_EVENT = "mentorAssign";
 const SOCKET_SERVER_URL =
-  process.env.NEXT_WS_URL || "http://localhost:4000/user-room";
+  process.env.NEXT_PUBLIC_WS_URL || "http://localhost:4000";
 
 const useOnlineUsers = () => {
   const { data: session, status } = useSession();
@@ -38,7 +38,7 @@ const useOnlineUsers = () => {
   useEffect(() => {
     if (status !== "loading") {
       // Creates a WebSocket connection
-      socketRef.current = socketIOClient(SOCKET_SERVER_URL, {});
+      socketRef.current = socketIOClient(`${SOCKET_SERVER_URL}/user-room`, {});
 
       beOnline();
 

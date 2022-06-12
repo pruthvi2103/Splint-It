@@ -12,7 +12,7 @@ const AuthButtons = () => {
     signIn(loginType);
   };
   if (status === "authenticated") {
-    return router.push({
+    router.push({
       pathname: "/demo",
       query: router.query,
     });
