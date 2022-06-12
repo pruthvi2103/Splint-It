@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import useChat from "../../../hooks/useChat";
+import React, { useState } from 'react';
+import useChat from '../../../hooks/useChat';
 
 const ChatTest = ({ roomId }: { roomId: string }) => {
-  const [chat, setChat] = useState("");
+  const [chat, setChat] = useState('');
   const { messages, sendMessage, userEmail } = useChat(roomId);
-  console.log(messages);
 
   return (
     <div>
       Test Chat
       <input
-        type="text"
+        type='text'
         onChange={(e) => {
           setChat(e.target.value);
         }}
@@ -18,7 +17,7 @@ const ChatTest = ({ roomId }: { roomId: string }) => {
       <button
         onClick={() => {
           sendMessage(chat);
-          setChat("");
+          setChat('');
         }}
       >
         Chat!
@@ -26,8 +25,7 @@ const ChatTest = ({ roomId }: { roomId: string }) => {
       <ul>
         {messages.map((message, idx) => (
           <li key={`${message.senderId}-idx`}>
-            {message.sentBy.email === userEmail ? "me:" : "other:"}{" "}
-            {message.body}
+            {message.sentBy.email === userEmail ? 'me:' : 'other:'} {message.body}
           </li>
         ))}
       </ul>

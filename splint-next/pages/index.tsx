@@ -8,7 +8,6 @@ import { ChatTest } from "../src/components/features/chat/test";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
-  console.log(session);
   const [roomId, setRoomId] = useState("");
   return (
     <div className={styles.container}>

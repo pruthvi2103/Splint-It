@@ -7,10 +7,16 @@ import {
   useSortBy,
   usePagination,
 } from 'react-table';
-import { BsChevronDoubleLeft, BsChevronLeft, BsChevronRight, BsChevronDoubleRight } from 'react-icons/bs';
-import { Button, PageButton } from './shared/Button';
-import { classNames } from './shared/Utils';
-import { SortIcon, SortUpIcon, SortDownIcon } from './shared/Icons';
+import {
+  BsChevronDoubleLeft,
+  BsChevronLeft,
+  BsChevronRight,
+  BsChevronDoubleRight,
+  BsChevronDown,
+} from 'react-icons/bs';
+import { Button, PageButton, classNames } from '../../../shared/Button';
+import { SortIcon, SortUpIcon, SortDownIcon } from '../../../shared/Icons';
+import Image from 'next/image';
 
 // Define a default UI for filtering
 function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) {
@@ -21,11 +27,11 @@ function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) 
   }, 200);
 
   return (
-    <label className='flex gap-x-2 items-baseline'>
+    <label className='flex gap-x-2 items-baseline ml-2'>
       <span className='text-gray-700'>Search: </span>
       <input
         type='text'
-        className='rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
+        className='rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 p-1 px-2 focus:ring-opacity-50'
         value={value || ''}
         onChange={(e) => {
           setValue(e.target.value);
@@ -52,10 +58,10 @@ export function SelectColumnFilter({ column: { filterValue, setFilter, preFilter
 
   // Render a multi-select box
   return (
-    <label className='flex gap-x-2 items-baseline'>
+    <label className='flex gap-x-2  items-center justify-center'>
       <span className='text-gray-700'>{render('Header')}: </span>
       <select
-        className='rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
+        className='rounded-md py-1.5 px-1.5 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
         name={id}
         id={id}
         value={filterValue}
@@ -81,9 +87,10 @@ export function StatusPill({ value }) {
     <span
       className={classNames(
         'px-3 py-1 uppercase leading-wide font-bold text-xs rounded-full shadow-sm',
-        status.startsWith('active') ? 'bg-green-100 text-green-800' : null,
-        status.startsWith('inactive') ? 'bg-yellow-100 text-yellow-800' : null,
-        status.startsWith('offline') ? 'bg-red-100 text-red-800' : null
+        status.startsWith('completed') ? 'bg-green-100 text-green-800' : null,
+        status.startsWith('pending') ? 'bg-yellow-100 text-yellow-800' : null,
+        status.startsWith('ongoing') ? 'bg-red-100 text-sky-800' : null,
+        status.startsWith('urgent') ? 'bg-red-100 text-red-800' : null
       )}
     >
       {status}
@@ -93,10 +100,16 @@ export function StatusPill({ value }) {
 
 export function AvatarCell({ value, column, row }) {
   return (
-    <div className='flex items-center'>
-      <div className='flex-shrink-0 h-10 w-10'>
-        <img className='h-10 w-10 rounded-full' src={row.original[column.imgAccessor]} alt='' />
-      </div>
+    <div className='flex items-center justify-start'>
+      {!!row.original[column.imgAccessor] ? (
+        <Image
+          height={30}
+          width={30}
+          className='rounded-full'
+          src={row.original[column.imgAccessor]}
+          alt='profile'
+        />
+      ) : null}
       <div className='ml-4'>
         <div className='text-sm font-medium text-gray-900'>{value}</div>
         <div className='text-sm text-gray-500'>{row.original[column.emailAccessor]}</div>
@@ -165,17 +178,18 @@ function Table({ columns, data }) {
             <div className='shadow overflow-hidden border-b border-gray-200 sm:rounded-lg'>
               <table {...getTableProps()} className='min-w-full divide-y divide-gray-200'>
                 <thead className='bg-gray-50'>
-                  {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroups.map((headerGroup, i) => (
+                    <tr key={headerGroup.id + i} {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column) => (
                         // Add the sorting props to control sorting. For this example
                         // we can add them into the header props
                         <th
+                          key={i}
                           scope='col'
-                          className='group px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                          className='group px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider '
                           {...column.getHeaderProps(column.getSortByToggleProps())}
                         >
-                          <div className='flex items-center justify-between'>
+                          <div className='flex items-center justify-center'>
                             {column.render('Header')}
                             {/* Add a sort direction indicator */}
                             <span>
@@ -199,13 +213,22 @@ function Table({ columns, data }) {
                   {page.map((row, i) => {
                     // new
                     prepareRow(row);
-                    return (
-                      <tr {...row.getRowProps()}>
+                    return row.cells.length < 1 ? (
+                      <tr>
+                        <td>No Tickets found.</td>
+                      </tr>
+                    ) : (
+                      <tr key={row} {...row.getRowProps()}>
                         {row.cells.map((cell) => {
                           return (
-                            <td {...cell.getCellProps()} className='px-6 py-4 whitespace-nowrap' role='cell'>
+                            <td
+                              key={cell}
+                              {...cell.getCellProps()}
+                              className='px-6 py-3 whitespace-nowrap w-full text-center'
+                              role='cell'
+                            >
                               {cell.column.Cell.name === 'defaultRenderer' ? (
-                                <div className='text-sm text-gray-500'>{cell.render('Cell')}</div>
+                                <div className='text-sm text-gray-500 '>{cell.render('Cell')}</div>
                               ) : (
                                 cell.render('Cell')
                               )}
@@ -222,7 +245,7 @@ function Table({ columns, data }) {
         </div>
       </div>
       {/* Pagination */}
-      <div className='py-3 flex items-center justify-between'>
+      <div className='py-3 flex items-center justify-between px-1.5'>
         <div className='flex-1 flex justify-between sm:hidden'>
           <Button onClick={() => previousPage()} disabled={!canPreviousPage}>
             Previous
@@ -240,18 +263,19 @@ function Table({ columns, data }) {
             <label>
               <span className='sr-only'>Items Per Page</span>
               <select
-                className='mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
+                className='rounded-md py-1.5 px-1.5 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
                 value={state.pageSize}
                 onChange={(e) => {
                   setPageSize(Number(e.target.value));
                 }}
               >
-                {[5, 10, 20].map((pageSize) => (
+                {[5, 10].map((pageSize) => (
                   <option key={pageSize} value={pageSize}>
                     Show {pageSize}
                   </option>
                 ))}
               </select>
+              {/* <BsChevronDown className='absolute right-2 top-4 -mt-px' /> */}
             </label>
           </div>
           <div>
@@ -265,11 +289,11 @@ function Table({ columns, data }) {
               </PageButton>
               <PageButton onClick={() => previousPage()} disabled={!canPreviousPage}>
                 <span className='sr-only'>Previous</span>
-                <ChevronLeftIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+                <BsChevronLeft className='h-5 w-5 text-gray-400' aria-hidden='true' />
               </PageButton>
               <PageButton onClick={() => nextPage()} disabled={!canNextPage}>
                 <span className='sr-only'>Next</span>
-                <ChevronRightIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+                <BsChevronRight className='h-5 w-5 text-gray-400' aria-hidden='true' />
               </PageButton>
               <PageButton
                 className='rounded-r-md'
@@ -277,7 +301,7 @@ function Table({ columns, data }) {
                 disabled={!canNextPage}
               >
                 <span className='sr-only'>Last</span>
-                <ChevronDoubleRightIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+                <BsChevronDoubleRight className='h-5 w-5 text-gray-400' aria-hidden='true' />
               </PageButton>
             </nav>
           </div>
