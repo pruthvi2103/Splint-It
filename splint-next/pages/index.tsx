@@ -5,6 +5,7 @@ import styles from "../styles/Home.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import { ChatTest } from "../src/components/features/chat/test";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
@@ -18,75 +19,24 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-        {!session && (
-          <button
-            onClick={() => {
-              signOut();
-            }}
-          >
-            Sign Out
-          </button>
-        )}
-        <div>
-          <input
-            type="text"
-            onChange={(e) => {
-              setRoomId(e.target.value);
-            }}
-          />
-          {roomId === "123" && <ChatTest roomId="123" />}
-        </div>
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.tsx</code>
+        <p className="text-center font-bold  text-4xl	">Why Splint It?</p>
+        <p className="text-center font-bold  text-5xl	mt-2 mb-4 tracking-wide">
+          because <span className="text-indigo-600">Splint</span> means to{" "}
+          {"  "}
+          <span className="text-indigo-600">Support.</span>
         </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        <h2 className="text-xl text-gray-500 m-0 font-medium tracking-wide">
+          Hassle Free Support management, add a splint to all cracks!
+        </h2>
+        <Link
+          href={"/demo"}
+          className="flex item-center justify-center mt-8 -ml-16"
         >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+          <button className="hover:scale-105 transition-all duration-300 tracking-wide text-3xl bg-indigo-500 py-3 px-8 rounded-full mt-4 tracking-wide text-gray-100 form-indigo-500 to-sky-600">
+            Demo
+          </button>
+        </Link>
+      </main>
     </div>
   );
 };
